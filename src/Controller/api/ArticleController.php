@@ -15,24 +15,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Document\Article;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+//use Symfony\Component\Security\Core\User\UserInterface;
+//use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 
 class ArticleController extends FOSRestController
 {
-    
-    public function getTokenUser(UserInterface $user, JWTTokenManagerInterface $JWTManager)
-    {
-        return new JsonResponse(['token' => $JWTManager->create($user)]);
-    }
-
+   
     /**
      * Matches /api/articles/{id}
      * 
      * @Route("/api/articles/{id}")
      * Method used for fetch records from articles id
      */
-    public function getArticleAction(string $id=null, JWTTokenManagerInterface $JWTManager ) 
+    public function getArticleAction(string $id=null ) 
     {
         $dm = $this->get('doctrine_mongodb')->getManager();
         $repository = $dm->getRepository(Article::class);
@@ -41,8 +36,6 @@ class ArticleController extends FOSRestController
         else
             $Articles = $repository->findAll();
         
-        //$token = $JWTManager->create($Articles);
-
         return View::create($Articles, Response::HTTP_CREATED , []);
     }
 

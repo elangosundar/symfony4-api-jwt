@@ -29,10 +29,9 @@ class AuthController extends AbstractController
         return new Response(sprintf('User %s successfully created', $user->getUsername()));
     }
 
-    public function api(Request $request)
+    public function authverify(Request $request)
     {
-       
-        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
+       return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
     }
 
     /**
@@ -50,20 +49,4 @@ class AuthController extends AbstractController
     {
 
     }
-
-    /**
-     * @Route("/login", name="login")
-    */
-    /* public function login(Request $request)
-    {
-        $username = $request->request->get('username');
-        $user = new User($username);
-
-        //echo "===><pre>";print_R($user);
-        //echo "";exit;
-        return $this->json(array(
-            'username' => $user->getUsername(),
-           // 'roles' => $user->getRoles(),
-        ));
-    } */
 }
