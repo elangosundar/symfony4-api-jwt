@@ -19,13 +19,16 @@
     },
     "require-dev": {
         "symfony/dotenv": "*",
-        "symfony/web-server-bundle": "*"
+        "symfony/web-server-bundle": "4.1.*"
     },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "ext-mongo": "1.6.16"
+        }
     },
     "autoload": {
         "psr-4": {

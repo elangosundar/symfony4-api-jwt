@@ -12,10 +12,18 @@ use Symfony\Component\Routing\Annotation\Route;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Firewall;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class AuthController extends AbstractController
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
+use FOS\RestBundle\Controller\FOSRestController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\Controller\Annotations\Version;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
+
+class AuthController extends FOSRestController
 {
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
+        echo "leaf";exit;
         $em = $this->getDoctrine()->getManager();
         
         $username = $request->request->get('_username');
@@ -31,22 +39,20 @@ class AuthController extends AbstractController
 
     public function authverify(Request $request)
     {
-       return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
+//echo  "Leaf===>";exit;
+        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
     }
-
-    /**
-     * @Route("/login_check", name="security_login_check")
-     */
-    public function loginCheckAction()
+    
+    public function test1(Request $request)
     {
-        //default 
+echo  "Version1===>";exit;
+        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
     }
-
-    /**
-     * @Route("/logout", name="logout")
-     */
-    public function logoutAction()
+    
+    public function test2(Request $request)
     {
-
+echo  "Verison2===>";exit;
+        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
     }
+
 }

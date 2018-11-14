@@ -4,9 +4,20 @@ register:
     methods: POST
 
 auth_verify:
-    path: /v1/api/authverify
+    path: /{version}/api/authverify
     controller: App\Controller\AuthController::authverify
 
 api_login_check:
     path:     /v1/api/login_check
     methods:  [POST]
+
+v1test:
+    path: /{version}/api/v1test
+    controller: App\Controller\AuthController::test1
+
+v2test:
+    path: /{version}/api/v2test
+    controller: App\Controller\AuthController::test2
+    #type:     rest
+    #resource: App\Controller\AuthController
+    #prefix: /v1
