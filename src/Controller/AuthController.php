@@ -17,13 +17,11 @@ use FOS\RestBundle\Controller\Annotations as FOSRest;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\Annotations\Version;
-use FOS\RestBundle\Controller\Annotations\RouteResource;
 
 class AuthController extends FOSRestController
 {
     public function register(Request $request, UserPasswordEncoderInterface $encoder)
     {
-        echo "leaf";exit;
         $em = $this->getDoctrine()->getManager();
         
         $username = $request->request->get('_username');
@@ -39,20 +37,23 @@ class AuthController extends FOSRestController
 
     public function authverify(Request $request)
     {
-//echo  "Leaf===>";exit;
-        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
-    }
-    
-    public function test1(Request $request)
-    {
-echo  "Version1===>";exit;
-        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
-    }
-    
-    public function test2(Request $request)
-    {
-echo  "Verison2===>";exit;
+echo  "test===>";exit;
         return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
     }
 
+    /**
+     * @Route("/login_check", name="security_login_check")
+     */
+    public function loginCheckAction()
+    {
+        //default 
+    }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+
+    }
 }

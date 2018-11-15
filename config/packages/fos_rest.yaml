@@ -3,27 +3,25 @@
 fos_rest:
     param_fetcher_listener:  true
     allowed_methods_listener:  true
-    routing_loader: true
+    routing_loader: 
+        include_format: false
     body_listener: true
     
     format_listener:
         rules:
             - { path: ^/api, prefer_extension: false, fallback_format: json, priorities: [ json ] }
             - { path: ^/, prefer_extension: true, fallback_format: html, priorities: [ html ] }
-
+    
     versioning:
-        enabled: true 
-        resolvers:
-            query: true # Query parameter: /users?version=v1
-            custom_header: true # X-Accept-Version header
-            media_type: # Accept header
-                enabled: true
-                #regex: '/(v)=(?P<version>[0-9\.]+)/'
-                regex: '/(v)=(?P<v>[0-9\.]+)/'
-            
+        enabled: true
+        default_version: v1
+        #resolvers:
+            #query:
+                #enabled: true
+               # parameter_name: version
+
     view:
-        view_response_listener:  true    
+        view_response_listener:  true
 
 sensio_framework_extra:
     view: { annotations: true }
-
