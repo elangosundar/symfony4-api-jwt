@@ -31,7 +31,7 @@ use JMS\Serializer\Annotation\Until;
 class TestController extends FOSRestController
 {
     /**
-     *@Until("1.1")
+     *@Since("v1")
     */
     public function test1() 
     {

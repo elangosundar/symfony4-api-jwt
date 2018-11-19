@@ -7,6 +7,7 @@ use FOS\RestBundle\Controller\Annotations\Route;
 use FOS\RestBundle\Controller\Annotations\View;
 use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
+use JMS\Serializer\Annotation\Since;
 
 /**
  * @Version("v2")
@@ -14,9 +15,6 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
  */
 class ShareController extends FOSRestController
 {
-    /**
-     * @Route("/api/test",condition="request.attributes.get('version') == 'v2'")
-     */
     public function getTestAction()
     {
         $output = array();

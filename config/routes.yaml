@@ -14,12 +14,20 @@ api_login_check:
 v1test:
     path:  /{version}/api/test
     controller: App\Controller\v1\ShareController::getTestAction
-    #condition: "request.attributes.get('version') in ['v1', 'v2']"
-    condition:  "request.attributes.get('version') == 'v1'"
+    condition: "request.attributes.get('version') in ['v1', 'v2']"
     requirements: 
-        version: 'v1|v2'
+        version: 'v1'
+
+v2test:
+    path:  /{version}/api/test
+    controller: App\Controller\v2\ShareController::getTestAction
+    condition: "request.attributes.get('version') in ['v1', 'v2']"
+    requirements: 
+        version: 'v2'
 
 guest_api:
     path:  /{version}/api/guesttest
     controller: App\Controller\TestController::test1
-    condition:  "request.attributes.get('version') == 'v1'"
+    #condition:  "request.attributes.get('version') == 'v1'"
+    requirements: 
+        version: 'v1|v2'

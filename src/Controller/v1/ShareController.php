@@ -14,9 +14,6 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
  */
 class ShareController extends FOSRestController
 {
-    /**
-     * @Route("/api/test",condition="request.attributes.get('version') == 'v1'")
-     */
     public function getTestAction()
     {
         $output = array();
@@ -24,5 +21,4 @@ class ShareController extends FOSRestController
         //$view = $this->view($output, 200);
         //return $this->handleView($view);
     }
-
-}   
+}
