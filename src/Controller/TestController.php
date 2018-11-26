@@ -21,6 +21,7 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Since;
 use JMS\Serializer\Annotation\Until;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * @Version("v1")
@@ -31,11 +32,23 @@ use JMS\Serializer\Annotation\Until;
 class TestController extends FOSRestController
 {
     /**
-     *@Since("v1")
+     *@Until("1")
     */
     public function test1() 
     {
-        echo "testing===> Block";
+        echo "testing ===> 1 ===> Block";
+        exit;
+    }
+
+    /**
+     * @Since("2")
+     * @SerializedName("test1")
+
+    */
+    public function test2() 
+    {
+        echo "testing===> 2 ===> Block";
         exit;
     }
 }
+
