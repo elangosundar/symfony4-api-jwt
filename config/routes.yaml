@@ -9,7 +9,15 @@ auth_verify:
 
 api_login_check:
     path:     /v1/api/login_check
-    methods:  [POST]
+    #methods:  [POST]
+
+user_auth_verify:
+    path: /{version}/api/userauthverify
+    controller: App\Controller\AuthController::userAuthenticationVerify    
+
+user_auth_verify_test:
+    path: /{version}/api
+    controller: App\Controller\AuthController::userAuthenticationTest    
 
 v1test:
     path:  /{version}/api/test
@@ -31,3 +39,4 @@ guest_api:
     #condition:  "request.attributes.get('version') == 'v1'"
     requirements: 
         version: 'v1|v2'
+
