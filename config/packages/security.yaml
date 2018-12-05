@@ -1,45 +1,42 @@
 security:
     encoders:
         App\Entity\User:
-            algorithm: bcrypt
+            algorithm: sha512
 
     providers:
-        entity_provider:
-            entity:
-                class: App\Entity\User
-                property: username
+        #entity_provider:
+            #entity:
+                #class: App\Entity\User
+                #property: username
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            id: App\Security\UserProvider
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/v1/api/login
+        userAuthenticationVerify:
+            pattern:  ^/v1/api/userauthverify
             stateless: true
             anonymous: true
             json_login:
-                check_path: /v1/api/login_check
+                check_path: /v1/api/userauthverify
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: app_user_provider
 
-        register:
-            pattern:  ^/v1/api/register
-            stateless: true
-            anonymous: true
-
-        auth_verify:
-            pattern:  ^/v1/api/authverify
+        api:
+            pattern:   ^/v1/api
             stateless: true
             anonymous: false
-            provider: entity_provider
+            lexik_jwt: ~ 
             guard:
-                authenticators:
+               authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
-                    
+      
     access_control:
-        - { path: ^/v1/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/v1/api/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/v1/api/authverify, roles: IS_AUTHENTICATED_FULLY }
-
-    
+        - { path: ^/v1/api/userAuthenticationVerify, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/v1/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+ 

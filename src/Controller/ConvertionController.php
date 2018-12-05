@@ -27,6 +27,37 @@ class ConvertionController extends FOSRestController
     public function indexAction($id = null ) 
     {
         echo "<pre>";
+        $CS_API_URL =  "https://home.stage.pionline.com/clickshare/extAPI1.do?";
+       
+        $params = [
+            'CSAuthID'       => "test1",
+            'CSAuthKey'      => "abcdefg",
+            'CSOp'           => "authenticateUser",
+            'CSUsername'     => "mpatel@pionline.com",
+            'CSPassword'     => "mpatel@pionline.com",
+            "CSAuthReq"      => 1
+        ];
+        
+        $options = [
+            CURLOPT_HEADER          => 0,
+            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_SSL_VERIFYPEER  => 0,
+            CURLOPT_SSL_VERIFYHOST  => 0,
+            CURLOPT_TIMEOUT         => 100,
+            CURLOPT_CONNECTTIMEOUT  => 5
+          ];
+
+        $url = implode('', [$CS_API_URL, http_build_query($params)]);
+echo "Api Url ===>".$url ;
+
+        // make request
+        $request = curl_init($url);
+        curl_setopt_array($request, $options);
+        $result = curl_exec($request);
+        //$result = json_decode(curl_exec($request), true)['CSResponse'];
+echo "<pre> Results Array ===>"; print_R($result);
+        exit;
+
         //Mongo Connection
         $dm = $this->get('doctrine_mongodb')->getManager();
         //print_R($dm);
@@ -103,7 +134,6 @@ class ConvertionController extends FOSRestController
                 $arr = Array();
                 foreach($result_table_data as $c => $v){
                    foreach($v as $vc => $vv){
-                        //echo "<br> ====>".$vc." , ".$vv;
                         $obj[$this->utf8_encode_suissa($vc)] = $this->utf8_encode_suissa($vv);
                     }
                     $arr[] = $obj;
@@ -111,7 +141,7 @@ class ConvertionController extends FOSRestController
                 
                 print_R($arr);
 
-                $erro = 0;			
+                /* $erro = 0;			
                 $this->getTime();
                 foreach($arr as $cc => $Users){
                     print_R($Users);
@@ -121,7 +151,7 @@ class ConvertionController extends FOSRestController
                         $erro++;
                         $var_erro[] = var_dump($vv);
                     }
-                }
+                } */
 
                 /*
                 $this->getTime();
