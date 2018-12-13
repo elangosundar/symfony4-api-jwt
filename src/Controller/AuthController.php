@@ -28,12 +28,61 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 #use App\Entity\User;
 use App\Security\User;
+use App\Security\UserProvider;
+
+// use App\Security\WebserviceUser;
+// use App\Security\WebserviceUserProvider;
+
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
 
 class AuthController extends FOSRestController
 {
+    // /**
+    //  * @var UserProviderInterface
+    //  */
+    // protected $userProvider;
+
+    // /**
+    //  * @var JWTManagerInterface
+    //  */
+    // protected $jwtManager;
+
+    // /**
+    //  * @var EventDispatcherInterface
+    //  */
+    // protected $dispatcher;
+
+    // /**
+    //  * @var string
+    //  */
+    // protected $userIdentityField;
+
+    // /**
+    //  * @var string
+    //  */
+    // private $userIdClaim;
+
+    // /**
+    //  * @param UserProviderInterface    $userProvider
+    //  * @param JWTManagerInterface      $jwtManager
+    //  * @param EventDispatcherInterface $dispatcher
+    //  * @param string                   $userIdClaim
+    //  */
+    // public function __construct(
+    //     UserProviderInterface $userProvider,
+    //     //JWTManagerInterface $jwtManager,
+    //     EventDispatcherInterface $dispatcher
+    //     //$userIdClaim
+    // ) {
+    //     $this->userProvider      = $userProvider;
+    //     //$this->jwtManager        = $jwtManager;
+    //     $this->dispatcher        = $dispatcher;
+    //     $this->userIdentityField = 'username';
+    //     //$this->userIdClaim       = $userIdClaim;
+    // }
+    
     public function userAuthenticationVerify(User $user, EventDispatcherInterface $dispatcher ){
-        echo "<pre>";
-        print_R($user);
         $CS_API_URL =  "https://home.stage.pionline.com/clickshare/extAPI1.do?";
         $data = [];
         $params = [
@@ -70,26 +119,8 @@ class AuthController extends FOSRestController
                     $event    = new AuthenticationSuccessEvent(['token' => $token],  $user, $response);
                     $dispatcher->dispatch(Events::AUTHENTICATION_SUCCESS, $event);
                     $response->setData($event->getData());
-echo "<br>";print_r($response);
-exit;
+                    return $response;
                 }
-
-                /* return [
-                    'auth'         => $result['errorCode'] === '0',
-                    'status'       => $result['errorCode'],
-                    'response'     => $result['responseString'],
-                    'userId'       => $userObj['userId'],
-                    'email'        => $userObj['email'],
-                    'nameFirst'    => $userObj['nameFirst'],
-                    'nameLast'     => $userObj['nameLast'],
-                    'effectivegid' => $userObj['effectivegid'],
-                    'accessLevel'  => $userObj['djoeAccessLevel'],
-                    'freeIPAccess' => $result['responseString'] === 'FreeAccess',
-                    'locked'       => $userObj['locked'],
-                    'userType'     => $this->get_user_type(),
-                    'appKey'       => $this->ci->encrypt->encode($userObj['userId'], self::APP_KEY),
-                    'busind'       => !empty($userObj['busInd']) ? $userObj['busInd'] : null
-                ]; */
             } else {
                return array_merge($this->user_obj, ['error' => $result['responseString']]);
             }
@@ -103,24 +134,4 @@ exit;
     {
         return new Response("Test Authentications...!");
     }
-    
-    /*public function register(Request $request, UserPasswordEncoderInterface $encoder)
-    {
-        $em = $this->getDoctrine()->getManager();
-        
-        $username = $request->request->get('_username');
-        $password = $request->request->get('_password');
-        
-        $user = new User($username);
-        $user->setPassword($encoder->encodePassword($user, $password));
-        $em->persist($user);
-        $em->flush();
-
-        return new Response(sprintf('User %s successfully created', $user->getUsername()));
-    }
-
-    public function authverify(Request $request)
-    {
-        return new Response(sprintf('Logged in as %s', $this->getUser()->getUsername()));
-    }*/
 }

@@ -7,8 +7,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface
 {
     private $username;
+    private $password;
 
     private $roles = [];
+
+    // public function __construct($username, $password, $roles
+    // ) {
+    //     $this->username   = $username;
+    //     $this->password   = $password;
+    //     $this->roles      = $roles;
+    // }
 
     /**
      * A visual identifier that represents this user.
@@ -52,6 +60,7 @@ class User implements UserInterface
     public function getPassword()
     {
         // not needed for apps that do not check user passwords
+        return 'test';
     }
 
     /**
