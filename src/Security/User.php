@@ -11,13 +11,6 @@ class User implements UserInterface
 
     private $roles = [];
 
-    /*public function __construct($username, $password, $roles
-    ) {
-        $this->username   = $username;
-        $this->password   = $password;
-        $this->roles      = $roles;
-    }*/
-
     /**
      * A visual identifier that represents this user.
      *

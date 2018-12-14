@@ -67,9 +67,7 @@ class AuthController extends FOSRestController
                 
                 if($result['responseString'] == "Authenticated" && $result['errorCode'] === '0'){
                     $token = $this->get('lexik_jwt_authentication.encoder')->encode(['username' => $userObj['userName'] ]);
-echo $token;
-
-                    return new Response( $token);
+                    return new Response($token);
                     // $response = new JWTAuthenticationSuccessResponse($token, $data);
                     // $event    = new AuthenticationSuccessEvent(['token' => $token],  $user, $response);
                     // $dispatcher->dispatch(Events::AUTHENTICATION_SUCCESS, $event);
@@ -78,13 +76,10 @@ echo $token;
                 }
             } else {
                 return new Response("Userid is not getting");
-               //return array_merge($this->user_obj, ['error' => $result['responseString']]);
             }
         } else {
             return new Response("Unable to connect to Clickshare");
-            //return array_merge($this->user_obj, ['error' => 'Unable to connect to Clickshare']);
         }
-        exit;
     }
 
     public function userAuthenticationTest(Request $request)

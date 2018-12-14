@@ -14,6 +14,27 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\DefaultEncoder;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+use FOS\RestBundle\View\View;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
+use FOS\RestBundle\Controller\FOSRestController;
+
+use FOS\RestBundle\Controller\Annotations\Version;
+
+use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
+use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
+
+use Lexik\Bundle\JWTAuthenticationBundle\Event;
+
+use Lexik\Bundle\JWTAuthenticationBundle\Events;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use App\Security\UserProvider;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+
+
 class ApiJWTAuthentication extends AbstractGuardAuthenticator
 {
     private $jwtEncoder;
@@ -41,11 +62,28 @@ class ApiJWTAuthentication extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        echo "leaf==>".$request->request->get('userName');
-        return array(
-            'token' => $request->headers->get('X-AUTH-TOKEN'),
-            'userName' => "Elangovan"
-        );
+        try {
+            $extractor = new AuthorizationHeaderTokenExtractor(
+                'Bearer',
+                'Authorization'
+            );
+            
+            $token = $extractor->extract($request);
+            $tokenName = $this->jwtEncoder->decode($token);
+
+            if(!$tokenName){
+                return null;
+            }
+
+            return array(
+                'token' => $token,
+                'userName' => $tokenName["username"]
+            );
+
+        } catch (\CustomUserMessageAuthenticationException $e) {
+            //throw new CustomUserMessageAuthenticationException($e->getMessage(), 0, $e);
+            throw new \Symfony\Component\Security\Core\Exception\BadCredentialsException($e->getMessage(), 0, $e);
+        }
     }
 
     /**
@@ -55,62 +93,29 @@ class ApiJWTAuthentication extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        //echo 'first ===>';exit;
-        return $request->headers->has('X-AUTH-TOKEN');
+        return $request->headers->has('Authorization');
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider )
     {
+        $userProviderName =  $userProvider->loadUserByUsername($credentials['userName']);
         $apiToken = $credentials['token'];
-        $username = $credentials['userName'];
-echo "<br>===>".$apiToken;
+
         if (null === $apiToken) {
             return;
         }
-print_R($credentials);
-//return;
-        $aa = new User($username);
-        print_R($aa);
-        return $aa;
-       
-        // $data = $this->jwtEncoder->decode($credentials);
-        
-        // if (!$data) {
-        //     return;
-        // }
 
-        // $username = $data['username'];
-        
-        // $login = $this->em->getRepository($this->loginRepo)
-        //             ->findOneBy([
-        //                 $this->loginUser => $username
-        //             ]);
-        
-        // $user = new UserDecorator($login);
-        
-        // if (!$user) {
-        //     return;
-        // } else {
-        //     return $user;
-        // }
+        $userObject = new User();
+        return $userObject;
     }
     
     public function checkCredentials($credentials, UserInterface $user)
     {
-        // check credentials - e.g. make sure the password is valid
-        // no credential check is needed in this case
-        // echo "hey leaf==>";print_R($user);
-        // echo $cc;
-        // return true to cause authentication success
         return true;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        //echo "<br>".$token;
-        echo "<br> <====>".$providerKey;
-        //echo '<br>Leafffff';exit;
-        // on success, let the request continue
         return null;
     }
 
