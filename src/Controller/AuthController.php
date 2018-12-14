@@ -26,62 +26,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-#use App\Entity\User;
 use App\Security\User;
 use App\Security\UserProvider;
-
-// use App\Security\WebserviceUser;
-// use App\Security\WebserviceUserProvider;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManagerInterface;
 
 class AuthController extends FOSRestController
 {
-    // /**
-    //  * @var UserProviderInterface
-    //  */
-    // protected $userProvider;
-
-    // /**
-    //  * @var JWTManagerInterface
-    //  */
-    // protected $jwtManager;
-
-    // /**
-    //  * @var EventDispatcherInterface
-    //  */
-    // protected $dispatcher;
-
-    // /**
-    //  * @var string
-    //  */
-    // protected $userIdentityField;
-
-    // /**
-    //  * @var string
-    //  */
-    // private $userIdClaim;
-
-    // /**
-    //  * @param UserProviderInterface    $userProvider
-    //  * @param JWTManagerInterface      $jwtManager
-    //  * @param EventDispatcherInterface $dispatcher
-    //  * @param string                   $userIdClaim
-    //  */
-    // public function __construct(
-    //     UserProviderInterface $userProvider,
-    //     //JWTManagerInterface $jwtManager,
-    //     EventDispatcherInterface $dispatcher
-    //     //$userIdClaim
-    // ) {
-    //     $this->userProvider      = $userProvider;
-    //     //$this->jwtManager        = $jwtManager;
-    //     $this->dispatcher        = $dispatcher;
-    //     $this->userIdentityField = 'username';
-    //     //$this->userIdClaim       = $userIdClaim;
-    // }
-    
     public function userAuthenticationVerify(User $user, EventDispatcherInterface $dispatcher ){
         $CS_API_URL =  "https://home.stage.pionline.com/clickshare/extAPI1.do?";
         $data = [];
@@ -93,7 +45,7 @@ class AuthController extends FOSRestController
             'CSPassword'     => "mpatel@pionline.com",
             "CSAuthReq"      => 1
         ];
-        
+
         $options = [
             CURLOPT_HEADER          => 0,
             CURLOPT_RETURNTRANSFER  => 1,
@@ -115,17 +67,22 @@ class AuthController extends FOSRestController
                 
                 if($result['responseString'] == "Authenticated" && $result['errorCode'] === '0'){
                     $token = $this->get('lexik_jwt_authentication.encoder')->encode(['username' => $userObj['userName'] ]);
-                    $response = new JWTAuthenticationSuccessResponse($token, $data);
-                    $event    = new AuthenticationSuccessEvent(['token' => $token],  $user, $response);
-                    $dispatcher->dispatch(Events::AUTHENTICATION_SUCCESS, $event);
-                    $response->setData($event->getData());
-                    return $response;
+echo $token;
+
+                    return new Response( $token);
+                    // $response = new JWTAuthenticationSuccessResponse($token, $data);
+                    // $event    = new AuthenticationSuccessEvent(['token' => $token],  $user, $response);
+                    // $dispatcher->dispatch(Events::AUTHENTICATION_SUCCESS, $event);
+                    // $response->setData($event->getData());
+                    // return $response;
                 }
             } else {
-               return array_merge($this->user_obj, ['error' => $result['responseString']]);
+                return new Response("Userid is not getting");
+               //return array_merge($this->user_obj, ['error' => $result['responseString']]);
             }
         } else {
-            return array_merge($this->user_obj, ['error' => 'Unable to connect to Clickshare']);
+            return new Response("Unable to connect to Clickshare");
+            //return array_merge($this->user_obj, ['error' => 'Unable to connect to Clickshare']);
         }
         exit;
     }

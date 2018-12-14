@@ -35,9 +35,15 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    # lexik_jwt_authentication.encoder.default:
-    #     class: Lexik\Bundle\JWTAuthenticationBundle\Encoder\DefaultEncoder
-    #     public: true
+    lexik_jwt_authentication.encoder.default:
+        class: Lexik\Bundle\JWTAuthenticationBundle\Encoder\DefaultEncoder
+        public: true
 
     app_user_provider:
         class: App\Security\UserProvider    
+
+    api.jwt_token_authenticator:
+        class: App\Security\ApiJWTAuthentication
+        #arguments: ['@doctrine.orm.entity_manager', '@lexik_jwt_authentication.encoder.default', '%login.repository%', '%login.lookup_user%']
+        arguments: ['@lexik_jwt_authentication.encoder.default']
+ 

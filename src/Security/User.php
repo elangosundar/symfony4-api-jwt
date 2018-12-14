@@ -11,12 +11,12 @@ class User implements UserInterface
 
     private $roles = [];
 
-    // public function __construct($username, $password, $roles
-    // ) {
-    //     $this->username   = $username;
-    //     $this->password   = $password;
-    //     $this->roles      = $roles;
-    // }
+    /*public function __construct($username, $password, $roles
+    ) {
+        $this->username   = $username;
+        $this->password   = $password;
+        $this->roles      = $roles;
+    }*/
 
     /**
      * A visual identifier that represents this user.
@@ -31,7 +31,6 @@ class User implements UserInterface
     public function setUsername(string $username): self
     {
         $this->username = $username;
-
         return $this;
     }
 
@@ -60,7 +59,7 @@ class User implements UserInterface
     public function getPassword()
     {
         // not needed for apps that do not check user passwords
-        return 'test';
+        return true;
     }
 
     /**

@@ -28,10 +28,9 @@ class UserProvider implements UserProviderInterface
         // The $username argument may not actually be a username:
         // it is whatever value is being returned by the getUsername()
         // method in your User class.
-        
-        $userObj = new User($username, 'dddd', array('ROLE_API'));
-        //$userObj->setUsername($username);
-        //print_R($userObj);exit;
+        //echo 'usernammem';exit;
+        $userObj = new User($username, 'dddd', array('ROLE_USER'));
+        $userObj->setUsername($username);
         return $userObj;
         //throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);
     }
