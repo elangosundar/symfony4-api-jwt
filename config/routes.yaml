@@ -1,19 +1,7 @@
-register:
-    path: /v1/api/register
-    controller: App\Controller\AuthController::register
-    methods: POST
-
-auth_verify:
-    path: /{version}/api/authverify
-    controller: App\Controller\AuthController::authverify
-
-api_login_check:
-    path:     /v1/api/login_check
-    #methods:  [POST]
-
 user_auth_verify:
-    path: /{version}/api/userauthverify
-    controller: App\Controller\AuthController::userAuthenticationVerify    
+    path: /{version}/api/userauthverify/login
+    controller: App\Controller\AuthController::userAuthenticationVerify
+    #methods: [GET]
 
 user_auth_verify_test:
     path: /{version}/api
@@ -39,4 +27,3 @@ guest_api:
     #condition:  "request.attributes.get('version') == 'v1'"
     requirements: 
         version: 'v1|v2'
-

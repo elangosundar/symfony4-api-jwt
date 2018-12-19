@@ -9,19 +9,19 @@ fos_rest:
     
     format_listener:
         rules:
-            - { path: ^/api, prefer_extension: false, fallback_format: json, priorities: [ json ] }
-            - { path: ^/, prefer_extension: true, fallback_format: html, priorities: [ html ] }
-    
+            - { path: ^/api, priorities: [ json ], fallback_format: json, prefer_extension: false }
+            - { path: ^/v1,  priorities: [ json ], fallback_format: json, prefer_extension: false }
+            #- { path: ^/, prefer_extension: true, fallback_format: html, priorities: [ html ] }
+
     versioning:
         enabled: true
         default_version: v1
-        #resolvers:
-            #query:
-                #enabled: true
-               # parameter_name: version
 
     view:
         view_response_listener:  true
 
+    serializer:
+        serialize_null: true
+
 sensio_framework_extra:
-    view: { annotations: true }
+    view: { annotations: false }

@@ -1,14 +1,9 @@
 security:
     encoders:
-        App\Entity\User:
-            algorithm: sha512
+        App\Security\User:
+            algorithm: plaintext
 
     providers:
-        #entity_provider:
-            #entity:
-                #class: App\Entity\User
-                #property: username
-        # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             id: App\Security\UserProvider
 
@@ -18,25 +13,21 @@ security:
             security: false
 
         userAuthenticationVerify:
-            pattern:  ^/v1/api/userauthverify
+            pattern:  ^/v1/api/userauthverify/login
             stateless: true
             anonymous: true
-            json_login:
-                check_path: /v1/api/userauthverify
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-            provider: app_user_provider
 
         api:
             pattern:   ^/v1/api
             stateless: true
             anonymous: false
             lexik_jwt: ~ 
+            provider: app_user_provider
             guard:
-               authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
-      
+                authenticators:
+                    -   api.jwt_token_authenticator
+
     access_control:
-        - { path: ^/v1/api/userAuthenticationVerify, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/v1/api, roles: IS_AUTHENTICATED_ANONYMOUSLY }
- 
+        - { path: ^/v1/api/userauthverify/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/v1/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/v1/api, roles: ROLE_USER }
