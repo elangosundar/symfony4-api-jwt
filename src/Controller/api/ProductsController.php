@@ -29,7 +29,7 @@ class ProductsController extends FOSRestController
             $products = $repository->findBy(['id' => $id]);
         else
             $products = $repository->findAll();
-
+//echo "<pre>";print_R($products);exit;
         return View::create($products, Response::HTTP_CREATED, []);
     }
 
@@ -38,19 +38,19 @@ class ProductsController extends FOSRestController
      */
     public function addProducts(Request $request)
     {
-        $article = new Products();
-        $article->setProductName($request->get('ProductName'));
-        $article->setProductDescription($request->get('ProductDescription'));
-        $article->setProductPrice($request->get('ProductPrice'));
-        $article->setProductQty($request->get('ProductQty'));
-        $article->setStatus($request->get('status'));
+        $product = new Products();
+        $product->setProductName($request->get('ProductName'));
+        $product->setProductDescription($request->get('ProductDescription'));
+        $product->setProductPrice($request->get('ProductPrice'));
+        $product->setProductQty($request->get('ProductQty'));
+        $product->setStatus($request->get('status'));
 
-        if (is_object($article)) {
+        if (is_object($product)) {
             $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->persist($article);
+            $dm->persist($product);
             $dm->flush();
         }
-        return View::create($article, Response::HTTP_CREATED, []);
+        return View::create($product, Response::HTTP_CREATED, []);
     }
 
     /**

@@ -9,7 +9,7 @@ products_get:
 products_add:
     path: /api/products/add
     controller: App\Controller\api\ProductsController::addProducts
-    methods: [POST]
+#    methods: [POST]
 
 products_delete:
     path: /api/products/delete/{id}
