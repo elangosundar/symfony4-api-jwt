@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
- * @MongoDB\Document
+ * @MongoDB\Document(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
 {
@@ -30,6 +30,24 @@ class Article
      * @MongoDB\Field(type="string")
      */
     protected $userLastName;
+
+    /**
+     * @MongoDB\Field(type="string")
+     */
+
+    protected $salary;
+
+    /**
+     * @MongoDB\Field(type="string")
+     */
+
+    protected $department;
+
+    /**
+     * @MongoDB\Field(type="string")
+     */
+
+    protected $status;
 
     public function setId($id)
     {
@@ -59,5 +77,35 @@ class Article
     public function getUserLastName()
     {
         return $this->userLastName;
+    }
+
+    public function setSalary($salary)
+    {
+        $this->salary = $salary;
+    }
+
+    public function getSalary()
+    {
+        return $this->salary;
+    }
+
+    public function setDepartment($department)
+    {
+        $this->department = $department;
+    }
+
+    public function getDepartment()
+    {
+        return $this->department;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

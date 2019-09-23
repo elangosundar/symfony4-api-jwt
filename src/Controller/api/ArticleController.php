@@ -15,12 +15,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Document\Article;
 
-//use Symfony\Component\Security\Core\User\UserInterface;
-//use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-
 class ArticleController extends FOSRestController
 {
-   
+
     /**
      * Matches /api/articles/{id}
      * 
@@ -35,7 +32,9 @@ class ArticleController extends FOSRestController
             $Articles = $repository->findBy(['id' => $id]); 
         else
             $Articles = $repository->findAll();
-        
+
+        $Articles = $repository->findDisabled();
+
         return View::create($Articles, Response::HTTP_CREATED , []);
     }
 
@@ -50,6 +49,9 @@ class ArticleController extends FOSRestController
         $article = new Article();
         $article->setUserFirstName($request->get('userFirstName'));
         $article->setUserLastName($request->get('userLastName'));
+        $article->setSalary($request->get('salary'));
+        $article->setDepartment($request->get('department'));
+        $article->setStatus($request->get('status'));
 
         if (is_object($article))
         {
@@ -80,6 +82,5 @@ class ArticleController extends FOSRestController
             return View::create("No data Found", Response::HTTP_OK , []);
         }
     }
-
 
 }
