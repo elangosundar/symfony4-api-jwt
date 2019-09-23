@@ -1,4 +1,17 @@
-#user_auth_verify:
-#    path: /{version}/api/userauthverify/login
-#    controller: App\Controller\AuthController::userAuthenticationVerify
-#    methods: [GET]
+products_get_all:
+    path: /api/products
+    controller: App\Controller\api\ProductsController::getProducts
+    methods: [GET]
+products_get:
+    path: /api/products/{id}
+    controller: App\Controller\api\ProductsController::getProducts
+    methods: [GET]    
+products_add:
+    path: /api/products/add
+    controller: App\Controller\api\ProductsController::addProducts
+    methods: [POST]
+
+products_delete:
+    path: /api/products/delete/{id}
+    controller: App\Controller\api\ProductsController::deleteProducts
+    methods: [GET]
