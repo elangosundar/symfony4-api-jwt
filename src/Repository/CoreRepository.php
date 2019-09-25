@@ -12,14 +12,14 @@ use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
 
 use App\Document\Article;
 
-class ArticleRepository extends DocumentRepository
+class CoreRepository extends DocumentRepository
 {
 
     public function findDisabled()
     {
-        $qb = $this->createAggregationBuilder(Article::class);
+        /* $qb = $this->createAggregationBuilder(Article::class);
 
-        /* $qb->group()
+        $qb->group()
           ->field('id')
           ->expression('$department')
           ->field('department')
@@ -38,6 +38,22 @@ class ArticleRepository extends DocumentRepository
             ->toArray();
 
         return $results;
+    }
+
+    public function findAndUpdate($fieldLabel, $fieldValue, $collection, $result)
+    {
+        $qb = $this->createQueryBuilder($collection);
+        $results = $qb
+            ->findAndUpdate()
+            ->field($fieldLabel)->equals((string) $fieldValue)
+            ->field('productName')->set($result['productName'])
+            ->field('ProductDescription')->set($result['productDescription'])
+            ->field('ProductPrice')->set($result['productPrice'])
+            ->field('ProductQty')->set($result['productQty'])
+            ->field('status')->set($result['status'])
+            ->getQuery()
+            ->execute();
+        return true;
     }
 
     public function findAllOrderedByName()

@@ -45,12 +45,33 @@ class ProductsController extends FOSRestController
         $product->setProductQty($request->get('ProductQty'));
         $product->setStatus($request->get('status'));
 
-        if (is_object($product)) {
+        if (is_object($product) && array_filter((array) $product)) {
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->persist($product);
             $dm->flush();
         }
         return View::create($product, Response::HTTP_CREATED, []);
+    }
+
+    /**
+     * Method will used for editing the products
+     */
+    public function updateProducts($id, Request $request)
+    {
+        $msg = 'No data found';
+        if (!empty($id)) {
+            $product = [];
+            $product['productName'] = $request->get('ProductName') ?? null;
+            $product['productDescription'] = $request->get('ProductDescription') ?? null;
+            $product['productPrice'] = $request->get('ProductPrice') ?? null;
+            $product['productQty'] = $request->get('ProductQty') ?? null;
+            $product['status'] = $request->get('status') ?? null;
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            $repository = $dm->getRepository(Products::class);
+            $repository->findAndUpdate('_id', $id, Products::class, $product);
+            $msg = 'Updated successfullly...!' . $id;
+        }
+        return View::create($msg, Response::HTTP_CREATED, []);
     }
 
     /**

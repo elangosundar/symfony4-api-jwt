@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
- * @MongoDB\Document(repositoryClass="App\Repository\ArticleRepository")
+ * @MongoDB\Document(repositoryClass="App\Repository\CoreRepository")
  */
 class Products
 {
